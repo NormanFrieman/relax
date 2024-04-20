@@ -1192,7 +1192,7 @@ export class EditorBase extends React.Component<Props, State> {
 	}
 
 
-	getResultForCsv(activeNode: RANode) {
+	public getResultForCsv(activeNode: RANode) {
 		const result = memoize(
 			(node: RANode) => {
 				try {
@@ -1209,7 +1209,7 @@ export class EditorBase extends React.Component<Props, State> {
 			queryResult: result(activeNode),
 		});
 		
-	
+		return result(activeNode);
 	}
 
 	genericHint(cm: CodeMirror.Editor) {

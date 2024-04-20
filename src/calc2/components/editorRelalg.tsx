@@ -13,9 +13,10 @@ import * as CodeMirror from 'codemirror';
 import { Relation } from 'db/exec/Relation';
 import { AutoreplaceOperatorsMode, parseRelalg, queryWithReplacedOperatorsFromAst, relalgFromRelalgAstRoot, replaceVariables } from 'db/relalg';
 import * as React from 'react';
-import { faCalendarAlt, faTable, faMagic, faExternalLinkAlt, faPaste } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faTable, faMagic, faPaste } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { Interpreter } from 'api/interpreter';
 
 const NUM_TREE_LABEL_COLORS = 6;
 export const KEYWORDS_RELALG = [
@@ -72,38 +73,17 @@ export class EditorRelalg extends React.Component<Props, State> {
 				}}
 				mode="relalg"
 				execFunction={(self: EditorBase, text: string, offset) => {
-					const ast = parseRelalg(text, Object.keys(relations));
-					replaceVariables(ast, relations);
+					const root = Interpreter(text, relations);
+					const res = (
+						<Result
+							root={root}
+							numTreeLabelColors={NUM_TREE_LABEL_COLORS}
+							execTime={self.state.execTime == null ? 0 : self.state.execTime}
+						/>
+					)
 
-					if (ast.child === null) {
-						if (ast.assignments.length > 0) {
-							throw new Error(t('calc.messages.error-query-missing-assignments-found'));
-						}
-						else {
-							throw new Error(t('calc.messages.error-query-missing'));
-						}
-					}
-
-
-					const root = relalgFromRelalgAstRoot(ast, relations);
-					root.check();
-
-
-					self.historyAddEntry(text);
-
-					if (self.props.enableInlineRelationEditor) {
-						self.addInlineRelationMarkers(ast);
-					}
-
-					// calc.displayRaResult(root);
 					return {
-						result: (
-							<Result
-								root={root}
-								numTreeLabelColors={NUM_TREE_LABEL_COLORS}
-								execTime={self.state.execTime == null ? 0 : self.state.execTime}
-							/>
-						),
+						result: res,
 					};
 				}}
 				tab="relalg"

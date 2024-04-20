@@ -14,7 +14,7 @@ import { ConnectedCalc } from './views/calc';
 import { Help } from './views/help';
 import { Landing } from './views/landing';
 import { Imprint } from './views/imprint';
-import { Interpreter } from './components/interpreter';
+import { InterpreterFunc } from './components/interpreter';
 
 require('calc2/style/index.scss');
 
@@ -60,13 +60,14 @@ export class Main extends React.Component<Props, State> {
 								<Route path="/relax/landing" component={Landing} />
 								<Route path="/relax/help" component={Help} />
 								<Route path="/relax/imprint" component={Imprint} />
-								<Route path="/relax/test/:query" render={(props) => <Interpreter query={props.match.params.query} />} />
+								{/* <Route path="/relax/test/:query" render={(props) => <Interpreter query={props.match.params.query} />} /> */}
+								<Route path="/relax/api/:source/:id/:filename/:index/:query" component={InterpreterFunc} />
 
 								<Redirect from="/relax/calc" to="/relax/calc/local/ufes/local/0" exact strict />
 								<Route path="/relax/calc/:source/:id/:filename/:index" component={ConnectedCalc} />
 								<Route path="/relax/calc/:source/:id" component={ConnectedCalc} />
-								<Route path="/relax/api/:source/:id/:filename/:index" component={ConnectedCalc} />
-								<Route path="/relax/api/:source/:id" component={ConnectedCalc} />
+								{/* <Route path="/relax/api/:source/:id/:filename/:index" component={ConnectedCalc} />
+								<Route path="/relax/api/:source/:id" component={ConnectedCalc} /> */}
 								<Route render={match => (
 									<div className="view-min"><h1>404</h1>
 										<p>This route doesn't exist</p>

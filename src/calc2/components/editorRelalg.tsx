@@ -16,7 +16,7 @@ import * as React from 'react';
 import { faCalendarAlt, faTable, faMagic, faPaste } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { Interpreter } from 'api/interpreter';
+import { Interpreter } from './interpreter';
 
 const NUM_TREE_LABEL_COLORS = 6;
 export const KEYWORDS_RELALG = [
@@ -73,7 +73,7 @@ export class EditorRelalg extends React.Component<Props, State> {
 				}}
 				mode="relalg"
 				execFunction={(self: EditorBase, text: string, offset) => {
-					const root = Interpreter(text, relations);
+					const { root } = Interpreter(text, relations);
 					const res = (
 						<Result
 							root={root}

@@ -37,12 +37,12 @@ export class InterpreterPage extends React.Component<Props> {
 		});
 
 		const { rows } = Interpreter(query, relations);
-		console.log(rows);
+		console.log(rows?._rows);
 
 		return (
 			<div>
 				<pre>
-					{JSON.stringify(rows)}
+					{JSON.stringify(rows?._rows)}
 				</pre>
 			</div>
 		);
